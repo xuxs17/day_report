@@ -2,7 +2,7 @@ import xlrd
 import math
 
 class day_report():
-#初版(待优化)
+#初版(已经优化，添加千分位)
     def gen_report_word(self):
         excel = xlrd.open_workbook('D:/日报/日报.xlsx')
         table = excel.sheet_by_index(0)
@@ -24,56 +24,54 @@ class day_report():
                 if float(data['today_value']) > 1:
                 # 判断指标不是百分比类型
                     if data['today_value'] - data['before_day_value'] >= 0:
-                        print('{}日环比增长{}({}k),'.format(data['target'], data['day_ratio'],
-                                                       math.ceil(
-                                                           (data['today_value'] - data['before_day_value']) / 1000)))
+                        print('{}日环比增长{}({:,}k),'.format(data['target'], data['day_ratio'],round((data['today_value'] - data['before_day_value']) / 1000)))
                     else:
-                        print('{}日环比下降{}(-{}k),'.format(data['target'], data['day_ratio'], math.ceil(
+                        print('{}日环比下降{}(-{:,}k),'.format(data['target'], data['day_ratio'], round(
                             abs((data['today_value'] - data['before_day_value']) / 1000))))
                 else:
                 # 指标是百分比类型
                     if data['today_value'] - data['before_day_value'] >= 0:
                         print('{}日环比增长{}({}->{}),'.format(data['target'], data['day_ratio'],
-                                                          format(data['today_value'], '.2%'),
-                                                          format(data['before_day_value'], '.2%')))
+                                                          format(data['before_day_value'], '.2%'),
+                                                          format(data['today_value'], '.2%')))
                     else:
                         print('{}日环比下降{}({}->{}),'.format(data['target'], data['day_ratio'],
-                                                          format(data['today_value'], '.2%'),
-                                                          format(data['before_day_value'], '.2%')))
+                                                          format(data['before_day_value'], '.2%'),
+                                                          format(data['today_value'], '.2%')))
 
             else:
             # 当连续三日累计的值存在的时候
                 if float(data['today_value']) > 1:
                 # 判断指标不是百分比类型
                     if data['today_value'] - data['before_day_value'] >= 0:
-                        print('{}日环比增长{}({}k),{}连续三日累计增长{}({}k),'.format(data['target'], data['day_ratio'], math.ceil(
+                        print('{}日环比增长{}({:,}k),{}连续三日累计增长{}({:,}k),'.format(data['target'], data['day_ratio'], round(
                             (data['today_value'] - data['before_day_value']) / 1000),
                                                                          data['target'],
-                                                                         format(abs(float(data['three_day_ratio'], )),
-                                                                                '.2%'), math.ceil(
+                                                                         format(abs(float(data['three_day_ratio'] )),
+                                                                                '.2%'), round(abs(
                                 (data['today_value'] - (
-                                data['today_value'] / (1 + abs(data['three_day_ratio'])))) / 1000)))
+                                data['today_value'] / (1 + (data['three_day_ratio'])))) / 1000))))
                     else:
-                        print('{}日环比下降{}({}k),{}连续三日累计下降{}(-{}k),'.format(data['target'], data['day_ratio'], math.ceil(
+                        print('{}日环比下降{}(-{:,}k),{}连续三日累计下降{}(-{:,}k),'.format(data['target'], data['day_ratio'], round(
                             abs((data['today_value'] - data['before_day_value']) / 1000)),
                                                                           data['target'],
-                                                                          format(abs(float(data['three_day_ratio'], )),
-                                                                                 '.2%'), math.ceil(
+                                                                          format(abs(float(data['three_day_ratio'] )),
+                                                                                 '.2%'), round(abs(
                                 (data['today_value'] - (
-                                data['today_value'] / (1 + abs(data['three_day_ratio'])))) / 1000)))
+                                data['today_value'] / (1 + (data['three_day_ratio'])))) / 1000))))
                 else:
                 # 指标是百分比类型
                     if data['today_value'] - data['before_day_value'] >= 0:
                         print('{}日环比增长{}({}->{}),'.format(data['target'], data['day_ratio'],
-                                                          format(data['today_value'], '.2%'),
-                                                          format(data['before_day_value'], '.2%')))
+                                                          format(data['before_day_value'], '.2%'),
+                                                          format(data['today_value'], '.2%')))
                     else:
                         print('{}日环比下降{}({}->{}),'.format(data['target'], data['day_ratio'],
-                                                          format(data['today_value'], '.2%'),
-                                                          format(data['before_day_value'], '.2%')))
+                                                          format(data['before_day_value'], '.2%'),
+                                                          format(data['today_value'], '.2%')))
+
 
 
 if __name__ == '__main__':
     a=day_report().gen_report_word()
-
 
